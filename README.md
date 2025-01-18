@@ -2,13 +2,11 @@
 
 Nextcloud server packaged as a snap. It consists of:
 
-- Nextcloud 22
+- Nextcloud 30
 - Apache 2.4
-- PHP 8.0
-- MySQL 8
-- Redis 6
-- mDNS for network discovery
-
+- PHP 8.3
+- MySQL 8.0
+- Redis 7.2
 
 ## How to install
 
@@ -17,20 +15,13 @@ Nextcloud server packaged as a snap. It consists of:
 There are a [number of releases available][1]. By default you'll get the newest
 stable one, but you may be interested in others.
 
-
 ## How to use
-
-After install, assuming you and the device on which it was installed are on the
-same network, you should be able to reach the Nextcloud installation by visiting
-`<hostname>.local` in your browser. If your hostname is `localhost` or
-`localhost.localdomain`, like on an Ubuntu Core device, `nextcloud.local` will
-be used instead.
 
 Upon visiting the Nextcloud installation for the first time, you'll be prompted
 for an admin username and password. After you provide that information you'll be
 logged in and able to create users, install apps, and upload files.
 
-Note that this snap includes a service that runs cron.php every 15 minutes,
+Note that this snap includes a service that runs cron.php every 5 minutes,
 which will automatically change the cron admin setting to Cron for you.
 
 
@@ -111,7 +102,7 @@ To set it to be unlimited (not recommended), use -1:
 
 #### Cronjob interval configuration
 
-By default the cronjob interval is 15 minutes.
+By default the cronjob interval is 5 minutes.
 
 To adjust it (say, 10 minutes) simply run:
 
@@ -123,6 +114,7 @@ If you want to disable the cronjob completely, run:
 
 To reenable it again simply set the `nextcloud.cron-interval` snap variable to a value that isn't `-1`
 
+
 #### HTTP compression configuration
 
 By default, the snap does not enable HTTP compression. To enable it, run:
@@ -132,6 +124,13 @@ By default, the snap does not enable HTTP compression. To enable it, run:
 To disable it, run:
 
     $ sudo snap set nextcloud http.compression=false
+
+
+#### Reverse Proxy for Files High Performance Backend
+
+This option simply enables the reverse proxy configuration mentioned in the [Client Push README](https://github.com/nextcloud/notify_push#apache), that is the recommended way to setup the `notify_push` component.
+Read the complete instructions in [our wiki](https://github.com/nextcloud-snap/nextcloud-snap/wiki/Configure-HPB-client-push-for-Nextcloud-snap).
+
 
 #### Debug mode
 
@@ -224,3 +223,5 @@ And finally, run the tests:
     $ rake test
 
 [1]: https://github.com/nextcloud/nextcloud-snap/wiki/Release-strategy
+
+## See our [wiki](https://github.com/nextcloud-snap/nextcloud-snap/wiki) for more information

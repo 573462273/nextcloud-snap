@@ -1,3 +1,202 @@
+v 30.0.5snap1
+  - nextcloud: update to 30.0.5
+  - redis: update to 7.2.7
+  - php: update to 8.3.14
+  - ci: disable dailies for nextcloud 28
+
+v 30.0.4snap1
+  - nextcloud: update to 30.0.4
+
+v 30.0.2snap2
+  - php: update to 8.2.26
+
+v 30.0.2snap1
+  - nextcloud: update to 30.0.2
+
+v 30.0.1snap1
+  - nextcloud: update to 30.0.1
+
+v 29.0.8snap1
+  - nextcloud: update to 29.0.8
+  - php: update to 8.2.24
+  - mysql: update to 8.0.40
+  - redis: update to 7.2.6
+  - fixer: include expensive steps when regenerating assets
+  - fixer: flush redis DB
+
+v 29.0.7snap1
+  - nextcloud: update to 29.0.7
+  - php: enable sqlite
+
+v 29.0.6snap1
+  - nextcloud: update to 29.0.6
+  - php: update to 8.2.22
+
+v 29.0.4snap2
+  - mysql: update to 8.0.39
+
+v 29.0.4snap1
+  - nextcloud: update to 29.0.4
+  - apache: update to 2.4.62
+  - mysql: update to 8.0.38
+  - apache: fix http compression of javascript files
+
+v 29.0.2snap1
+  - nextcloud: update to 29.0.2
+  - php: update to 8.2.20
+
+v 28.0.6snap1
+  - nextcloud: update to 28.0.6
+  - php: update to 8.2.18
+  - redis: update to 7.0.15
+  - apache: update to 2.4.59
+  - mysql: use cmake snap to build
+  - mysql: update to 8.0.37
+  - ci: enable dailies for nextcloud 29
+  - ci: disable dailies for nextcloud 26
+
+v 27.1.6snap1
+  - nextcloud: update to 27.1.6
+  - mysql: update to 8.0.36
+  - php: update to 8.2.15
+  - php: enable sodium
+  - apache: add config to enable reverse proxy for notify_push
+
+v 27.1.4snap1
+  - nextcloud: update to 27.1.4
+
+v 27.1.3snap1
+  - php: update to 8.1.25
+  - mysql: revert BUG#34849343 reversion
+  - mysql: update to 8.0.35
+  - nextcloud: update to 27.1.3
+  - redis: update to 6.2.14
+  - apache: update to 2.4.58
+
+v 27.1.2snap1
+  - nextcloud: update to 27.1.2
+
+v 27.1.1snap2
+  - nextcloud: enable theming by default
+
+v 27.1.1snap1
+  - mysql: revert BUG#34849343 Aligned_atomic not working as intended
+  - nextcloud: update to 27.1.1
+
+v 27.0.2snap1
+  - nextcloud: update to 27.0.2
+  - php: update to 8.1.22
+
+v 26.0.4snap1
+  - nextcloud: update to 26.0.4
+  - mysql: update to 8.0.34
+  - redis: update to 6.2.13
+
+v 26.0.3snap1
+  - nextcloud: update to 26.0.3
+  - mdns-publisher: remove from the snap
+
+v 26.0.2snap1
+  - import: add documentation about confinement
+  - php: add config flag --enable-sysvsem
+  - nextcloud: update to 26.0.2
+
+v 25.0.7snap1
+  - php: update to 8.1.20
+  - certbot: use most recent certs
+  - nextcloud: update to 25.0.7
+
+v 25.0.6snap1
+  - nextcloud: update to 25.0.6
+  - mysql: update to 8.0.33
+  - apache: add mime type support for wasm
+  - redis: update to 6.2.12
+
+v 25.0.5snap2
+  - apache: update to 2.4.57
+
+v 25.0.5snap1
+  - nextcloud: update to 25.0.5
+
+v 25.0.4snap1
+  - apache: update to 2.4.56
+  - redis: update to 6.2.11
+  - nextcloud: update to 25.0.4
+
+v 25.0.3snap3
+  - php: update to 8.1.16
+
+v 25.0.3snap2
+  - php: bump interned strings buffer to a quarter of opcache buffer
+  - redis: update to 6.2.10
+
+v 25.0.3snap1
+  - apache: update to 2.4.55
+  - nextcloud: update to 25.0.3
+  - mysql: update to 8.0.32
+  - php: update to 8.0.27
+
+v 25.0.2snap1
+  - nextcloud: update to 25.0.2
+
+v 24.0.8snap1
+  - nextcloud: update to 24.0.8
+
+v 24.0.7snap1
+  - nextcloud: update to 24.0.7
+  - php: update to 8.0.25
+
+v 24.0.6snap2
+  - mysql: update to 8.0.31
+
+v 24.0.6snap1
+  - nextcloud: update to 24.0.6
+  - php: update to 8.0.24
+
+v 24.0.5snap1
+  - nextcloud: update to 24.0.5
+
+v 24.0.4snap1
+  - nextcloud: update to 24.0.4
+  - php: update to 8.0.23
+
+v 24.0.3snap2
+  - mysql: update to 8.0.30
+
+v 24.0.3snap1
+  - php: update to 8.0.21
+  - nextcloud: update to 24.0.3
+
+v 24.0.1snap1
+  - php: update to 8.0.20
+  - apache: update to 2.4.54
+  - nextcloud: update to 24.0.1
+
+v 23.0.5snap1
+  - redis: update to 6.2.7
+  - phpredis: update to 5.3.7
+  - php: update to 8.0.19
+  - nextcloud: update to 23.0.5
+  - mysql: update to 8.0.29
+
+v 23.0.3snap1
+  - apache: update to 2.4.53
+  - nextcloud: update to 23.0.3
+
+v 23.0.2snap1
+  - nextcloud: update to 23.0.2
+
+v 22.2.5snap1
+  - php: update to 8.0.16
+  - nextcloud: update to 22.2.5
+
+v 22.2.3snap3
+  - php: update to 8.0.15
+  - mysql: update to 8.0.28
+
+v 22.2.3snap2
+  - apache: update to 2.4.52
+
 v 22.2.3snap1
   - php: update to 8.0.13
   - nextcloud: update to 22.2.3

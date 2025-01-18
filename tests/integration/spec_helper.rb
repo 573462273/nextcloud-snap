@@ -7,9 +7,6 @@ require 'capybara/dsl'
 require 'capybara/rspec'
 require 'selenium-webdriver'
 
-# CircleCI has a chrome driver already in the image
-require 'webdrivers' unless ENV.include? 'CIRCLECI'
-
 if ENV['FIREFOX']
 	Capybara.register_driver :firefox do |app|
 		options = Selenium::WebDriver::Firefox::Options.new(
@@ -162,11 +159,10 @@ RSpec.configure do |config|
 		Capybara.current_session.driver.quit
 
 		# After each test, make sure maintenance mode is reset
-		`sudo nextcloud.occ -n maintenance:mode --off 2>&1`
-		expect($?.to_i).to eq 0
+		run 'sudo nextcloud.occ -n maintenance:mode --off 2>&1'
 
-		# Maintenance mode takes a second to apply (opcache)
-		sleep 2
+		# Maintenance mode takes two seconds to apply (opcache)
+		sleep 3
 
 		# Make sure any and all backups are removed
 		`sudo rm -rf /var/snap/nextcloud/common/backups`
@@ -176,8 +172,7 @@ RSpec.configure do |config|
 	end
 
 	def enable_https(port: nil)
-		`sudo nextcloud.enable-https self-signed`
-		expect($?.to_i).to eq 0
+		run 'sudo nextcloud.enable-https self-signed'
 		wait_for_nextcloud(https: true, port: port)
 	end
 
@@ -199,27 +194,43 @@ RSpec.configure do |config|
 			uri.port = port
 		end
 
-		success = false
+		wait_for("Timed out trying to access Nextcloud: #{uri.to_s}") do
+			begin
+				output = URI.open(uri, {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE}).readlines.join('')
+				next output.include? 'Nextcloud'
+			rescue Errno::ECONNREFUSED
+				# Do nothing: try again
+			rescue OpenURI::HTTPError => error
+				# Ignore 503s, wait for PHP to come up and try again
+				if error.io.status[0] != '503'
+					raise
+				end
+			end
+			false
+		end
+	end
 
+	def wait_for_maintenance_mode_to_be_off
+		wait_for('Timed out waiting for maintenance mode to be off') do
+			!nextcloud_is_in_maintenance_mode
+		end
+	end
+
+	def wait_for_nextcloud_fixer
+		wait_for('Timed out waiting for Nextcloud Fixer to finish') do
+			!nextcloud_fixer_is_running
+		end
+	end
+
+	def wait_for(failure_message)
 		begin
 			Timeout.timeout(30) do
-				while not success
-					begin
-						output = open(uri, {ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE})
-						success = output.readlines.join('').include? 'Nextcloud'
-					rescue Errno::ECONNREFUSED
-						# Do nothing: try again
-					rescue OpenURI::HTTPError => error
-						# Ignore 503s, wait for PHP to come up and try again
-						if error.io.status[0] != '503'
-							raise
-						end
-					end
+				while !yield
 					sleep 1
 				end
 			end
 		rescue Timeout::Error
-			fail "Timed out trying to access Nextcloud: #{uri.to_s}"
+			fail failure_message
 		end
 	end
 
@@ -229,10 +240,8 @@ RSpec.configure do |config|
 			options_string += "#{key}=#{value} "
 		end
 
-		`sudo snap set nextcloud #{options_string}`
-		expect($?.to_i).to eq 0
-		`snap watch --last=configure-snap`
-		expect($?.to_i).to eq 0
+		run "sudo snap set nextcloud #{options_string}"
+		run 'snap watch --last=configure-snap'
 	end
 
 	def nextcloud_is_installed
@@ -240,10 +249,28 @@ RSpec.configure do |config|
 		$?.to_i == 0
 	end
 
+	def nextcloud_is_in_maintenance_mode
+		`sudo snap run --shell nextcloud.occ -c '. "$SNAP/utilities/nextcloud-utilities" && nextcloud_is_in_maintenance_mode'`
+		$?.to_i == 0
+	end
+
+	def nextcloud_fixer_is_running
+		`snap services nextcloud.nextcloud-fixer | grep -qw active`
+		$?.to_i == 0
+	end
+
 	def install_nextcloud
 		unless nextcloud_is_installed
-			`sudo nextcloud.manual-install admin admin`
+			run 'sudo nextcloud.manual-install admin admin'
+		end
+	end
+
+	def run(command, expect_success: true)
+		system(command)
+		if expect_success
 			expect($?.to_i).to eq 0
+		else
+			expect($?.to_i).not_to eq 0
 		end
 	end
 end
